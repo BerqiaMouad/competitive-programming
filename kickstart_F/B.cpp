@@ -39,12 +39,13 @@ ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
 }
 
 
-void bfs(ll x, vector<vector<ll>>& graph, vector<ll>& level, vector<bool>& visited){
+void bfs(ll x, vector<vector<ll>>& graph, vector<ll>& level, vector<bool>& visited, vector<ll>& which_component, ll comp){
     queue<int> q;
 
     q.push(x);
  
     level[x] = 0;
+    which_component[x] = comp;
 
     visited[x] = true;
  
@@ -58,6 +59,7 @@ void bfs(ll x, vector<vector<ll>>& graph, vector<ll>& level, vector<bool>& visit
             if (!visited[b]) {
                 q.push(b);
                 level[b] = level[x] + 1;
+                which_component[b] = comp;
                 visited[b] = true;
             }
         }
@@ -76,7 +78,7 @@ int main()
         cout << "Case #" << tt - t << ": ";
         ll n, q; cin >> n >> q;
         vector<vector<ll>> graph(n);
-        vector<vector<ll>> levels(n);
+        vector<vector<ll>> levels(n, vector<ll>(n, 0));
         for(ll i = 0; i < n-1; i++){
             ll x, y; cin >> x >> y;
             x--, y--;
@@ -86,15 +88,26 @@ int main()
 
         vector<bool> visited(n, false);
         vector<ll> level(n, -1);
-        bfs(0, graph, level, visited);
 
-        for(ll i = 0; i <  n; i++){
-            if(level[i] != -1) levels[level[i]].push_back(i);
+        vector<ll> which_component(n);
+        ll comp = 0;
+
+        for(ll i =0; i < n; i++){
+            if(!visited[i]){
+                bfs(i, graph, level, visited, which_component, comp);
+                comp++;
+            }
         }
 
 
-        vector<float> quant(n, 0);
-        ll curr_level = 0;
+
+        for(ll i = 0; i <  n; i++){
+            if(level[i] != -1) levels[which_component[i]][level[i]]++;
+        }
+
+
+        vector<vector<float>> quant(n, vector<float>(n, 0));
+        vector<ll> currlevel(n, 0);
         ll res = 0;
 
         // while(q--){
@@ -113,19 +126,14 @@ int main()
         for(ll i = 0; i < q; i++){
             ll x; cin >> x;
             x--;
-            if(level[x] == -1)continue;
-            bool yep = false;
-            if(sz(levels[curr_level]) ==0)continue;
-            float temp = 1 / float(sz(levels[curr_level]));
-            for(int j = 0; j< sz(levels[curr_level]); j++){
-                quant[levels[curr_level][j]]+=temp;
-                if(quant[levels[curr_level][j]] == 1){
-                    yep = true;
-                }
-            }
-            if(yep){
-                res += sz(levels[curr_level]);
-                curr_level++;
+            ll comp_of_this = which_component[x];
+            if(levels[comp_of_this][currlevel[comp_of_this]] ==0)continue;
+            float temp = 1 / float(levels[comp_of_this][currlevel[comp_of_this]]);
+            
+            quant[comp_of_this][currlevel[comp_of_this]]+=temp;
+            if(quant[comp_of_this][currlevel[comp_of_this]] == 1){
+                res += levels[comp_of_this][currlevel[comp_of_this]];
+                currlevel[comp_of_this]++;
             }
         }
         cout << res << "\n";
