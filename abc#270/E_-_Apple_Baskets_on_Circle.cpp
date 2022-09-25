@@ -47,22 +47,26 @@ int main()
     vector<ll> v(n);
     cin >> v;
     priority_queue<ll, vector<ll>, greater<ll>> p;
+    map<ll, ll> m;
     for(auto it: v){
         if(it > 0)p.push(it);
+        m[it]++;
     }
+    ll ind = 0;
     while(k > 0){
-        for(ll i = 0; i< n; i++){
-            if(v[i] > 0 && k > 0){
-                v[i] -= p.top();
-                k -= p.top();
-                if(v[i] > 0)p.push(v[i]);
-            }
+        if(m[p.top()] <= 0){
+            p.pop();
+            continue;
         }
-        p.pop();
+        m[p.top()]--;
+        v[ind]-=p.top();
+        k -= p.top();
+        m[v[ind]]++;
+        p.push(v[ind]);
+        ind = (ind+1) % n;
     }
-    for(auto it: v){
+    for(auto it: v)
         cout << it << ' ';
-    }
     cout << "\n";
 
     return 0;
