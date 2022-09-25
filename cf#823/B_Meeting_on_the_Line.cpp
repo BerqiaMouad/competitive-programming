@@ -50,18 +50,17 @@ int main()
         cin >> x;
         vector<ll> T(n);
         cin >> T;
-        vector<pair<ll, ll>> v(n);
-        for(ll i = 0; i < n; i++){
-            v[i] = {x[i], T[i]};
+        vector<ll> v;
+        for(ll i = 0; i< n; i++){
+            if(T[i] == 0)v.push_back(x[i]);
+            else {
+                v.push_back(x[i] - T[i]);
+                v.push_back(x[i] + T[i]);
+            }
         }
         sort(all(v));
-        long double res = 0;
-        for(ll i = 1; i< n; i++){
-            res = (long double)(abs(v[i-1].first - v[i].first)) / 2;
-        }
-        for(ll i = 1; i < n; i++)
-            res += v[i].second;
-        cout << res/(n) << "\n";
+        long double res = (long double)(v[0] + v[sz(v) - 1]) / 2;
+        cout << fixed  << res << "\n";
     }
 
     return 0;
