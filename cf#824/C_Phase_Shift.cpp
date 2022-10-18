@@ -38,65 +38,89 @@ ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
     return out;
 }
 
+bool possible(int x, vector<vector<int>>& in_out){
+    int curr = x;
 
-string alphabet = "abcdefghijklmnopqrstuvwxyz";
-map<char, int> m;
+    for(int i = 0; i <= 26; i++){
+        curr = in_out[curr][1];
+        if(curr == -1)
+            return true;
+        else if(curr == x){
+            return false;
+        }
+    }
+
+    return true;
+}
 
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    string al = "abcdefghijklmnopqrstuvwxyz";
-    map<char, int> indices;
-    for(int i = 0; i< 26; i++){
-        indices[al[i]] = i;
-    }
 
     ll t ; cin >> t;
     while(t--){
         ll n; cin >> n;
-        string s; cin >> s;
+        string d; cin >> d;
+        vector<int> t(n);
+        for(int i = 0; i <  n; i++){
+            t[i] = (d[i] - 'a');
+        }
 
-        vector<bool> has_a_prev(26, false);
-        vector<bool> has_a_next(26, false);
-        string res = "";
+        vector<vector<int>> in_out(26, vector<int>(2, -1));
 
-        map<char, pair<char, char>> prev_next;
+        for(int i = 0; i< n; i++){
+            if(in_out[t[i]][0] != -1)
+                continue;
+            
+            for(int j = 0; j< 26; j++){
+                if(t[i] != j && in_out[j][1] == -1){
+                    in_out[j][1] = t[i];
+                    in_out[t[i]][0] = j;
 
-        for(ll i = 0; i < n; i++){
-            if(has_a_prev[(s[i] - 'a')]){
-                res += prev_next[s[i]].first;
-            }
-            else {
-                for(int j = 0; j < 26; j++){
-                    if((!has_a_next[j] && al[j] != s[i])){
-                        if((has_a_next[(s[i] - 'a')] && prev_next[s[i]].second == al[j]))
-                            continue;
+                    bool ok = true;
 
-                        if(has_a_prev[j] && has_a_next[(s[i] - 'a')]){
-                            bool ok = true;
-                            for(ll k = j; k < 26; k++){
-                                if(!has_a_prev[k] && !has_a_next[k]){
-                                    ok = false;
-                                    break;
-                                }
-                            }
-                            if(!ok){
-                                continue;
-                            }
+                    for(int k = 0; k < 26; k++){
+                        bool is_good = possible(k, in_out);
+                        if(!is_good){
+                            ok = false;
+                            break;
                         }
-                        has_a_next[j] = true;
-                        has_a_prev[(s[i] - 'a')] = true;
-                        prev_next[s[i]].first = al[j];
-                        prev_next[al[j]].second = s[i];
-                        res += al[j];
+                    }
+
+                    if(!ok){
+                        in_out[j][1] = -1;
+                        in_out[t[i]][0] = -1;
+                    }
+
+                    else {
                         break;
                     }
                 }
             }
         }
-        cout << res << "\n";
+
+
+        for(int i = 0; i< 26; i++){
+            if(in_out[i][0] == -1){
+                for(int j = 0; j< 26; j++){
+                    if(i != j && in_out[j][1] == -1){
+                        in_out[i][0] = j;
+                        in_out[j][1] = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        string s = "";
+
+        for(int i = 0; i< n; i++){
+            s += (in_out[t[i]][0] + 'a');
+        }
+
+        cout << s << "\n";
 
     }
 
