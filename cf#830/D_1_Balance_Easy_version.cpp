@@ -38,30 +38,28 @@ ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
     return out;
 }
 
-
-ll fact(ll n){
-    return (n == 0 ? 1: n * fact(n-1));
-}
-
-ll choose(ll n, ll k){
-    return fact(n) / fact(k) / fact(n - k);
-}
-
-
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
     ll t ; cin >> t;
+    set<ll> s;
+    s.insert(0);
+    map<ll, ll> m;
     while(t--){
-
-        ll n; cin >> n;
-
-        vector<ll> res(3, 1);
-
-
-
+        char op; cin >> op;
+        if(op == '+'){
+            ll x; cin >> x;
+            s.insert(x);
+        }
+        else {
+            ll k; cin >> k;
+            while(s.find(m[k]) != s.end()){
+                m[k] += k;
+            }
+            cout << m[k] << "\n";
+        }
     }
 
     return 0;

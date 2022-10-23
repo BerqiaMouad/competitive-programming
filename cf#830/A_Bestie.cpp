@@ -38,16 +38,6 @@ ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
     return out;
 }
 
-
-ll fact(ll n){
-    return (n == 0 ? 1: n * fact(n-1));
-}
-
-ll choose(ll n, ll k){
-    return fact(n) / fact(k) / fact(n - k);
-}
-
-
 int main()
 {
     ios::sync_with_stdio(0);
@@ -55,13 +45,33 @@ int main()
 
     ll t ; cin >> t;
     while(t--){
-
-        ll n; cin >> n;
-
-        vector<ll> res(3, 1);
-
-
-
+        ll n; cin >> n ;
+        vector<ll> a(n);
+        cin >> a;
+        ll g = 0;
+        for(auto it: a){
+            g = __gcd(g, it);
+        }
+        if(g == 1){
+            cout << "0\n";
+        }
+        else{
+            ll gg = 0;
+            ll cost = 0;
+            for(ll i = n; i>= 1; i--){
+                gg = __gcd(gg, i);
+                cost += (n - i + 1);
+                if(gg == 1){
+                    break;
+                }
+            }
+            for(ll i = n; i>= 1; i--){
+                if(__gcd(g, i) == 1){
+                    cout << min(n - i + 1, cost) << "\n";
+                    break;
+                }
+            }
+        }
     }
 
     return 0;

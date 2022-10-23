@@ -38,16 +38,6 @@ ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
     return out;
 }
 
-
-ll fact(ll n){
-    return (n == 0 ? 1: n * fact(n-1));
-}
-
-ll choose(ll n, ll k){
-    return fact(n) / fact(k) / fact(n - k);
-}
-
-
 int main()
 {
     ios::sync_with_stdio(0);
@@ -55,13 +45,29 @@ int main()
 
     ll t ; cin >> t;
     while(t--){
-
         ll n; cin >> n;
+        string s; cin >> s;
+        if(n == 1){
+            cout << "0\n";
+            continue;
+        }
 
-        vector<ll> res(3, 1);
-
-
-
+        ll last_one = -1;
+        ll op = 0;
+        vector<ll> changes;
+        for(ll i = 0; i < n; i++){
+            if(op % 2 == 1){
+                s[i] = (s[i] == '1' ? '0': '1');
+            }
+            if(s[i] == '1' && last_one == -1)
+                last_one = i;
+            if(s[i] == '0' && last_one !=  -1){
+                changes.push_back(last_one);
+                op++;
+                last_one = i;
+            }
+        }
+        cout << op << "\n";
     }
 
     return 0;
