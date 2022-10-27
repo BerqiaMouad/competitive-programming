@@ -60,7 +60,7 @@ int main()
                 break;
             }
             else {
-                c[i+1] +=   ;
+                c[i+1] += (c[i] / (i+1));
             }
         }
     }
