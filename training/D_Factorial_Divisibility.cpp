@@ -42,32 +42,31 @@ int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-        ll n, x; cin >>n >> x;
-        vector<ll> a(n);
-        cin >> a; 
-        for(ll i = 0; i< n; i++){
-            if(a[i] >= x){
-                a[i] = 0;
+
+    ll n, x; cin >>n >> x;
+    vector<ll> c(x+2, 0);
+    for(ll i = 0; i < n; i++){
+        ll temp; cin >> temp;
+        c[temp]++;
+    }
+
+    bool ok = true;
+
+    for(ll i = 1; i < x; i++){
+        if(c[i] > 0){
+            if((c[i] % (i+1)) != 0){
+                cout << "No\n";
+                ok = false;
+                break;
             }
             else {
-                a[i] = 1;
+                c[i+1] +=   ;
             }
         }
-        ll sum = 0;
-        for(ll i = 0; i <n; i++){
-            sum += a[i];
-            cout << a[i] << ' ';
-        }
-        cout << "\n";
-        cout << sum << "\n";
-        while(x >= 1 && sum > 0){
-            if(sum % x == 0){
-                sum /= x;
-                x--;
-            }
-            else break;
-        }
-        cout << (x == 0 ? "Yes\n": "No\n");
+    }
+
+    if(ok)
+        cout << "Yes\n";
 
     return 0;
 }
