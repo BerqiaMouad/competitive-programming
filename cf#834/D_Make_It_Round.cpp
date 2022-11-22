@@ -1,6 +1,3 @@
-//
-// Created by mouad on 19/11/22.
-//
 #include <bits/stdc++.h>
 using namespace std;
 #pragma GCC optimize("O2")
@@ -37,7 +34,7 @@ template <typename A, typename B>
 ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
 {
     for (auto it : v)
-        out << it.first << ' ' << it.second << "\n";
+        out << it.first << ' ' << it.second;
     return out;
 }
 
@@ -46,24 +43,11 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    ll n; cin >> n;
-    vector<ll> a(n);
-    cin >> a;
-    map<ll, ll> freq;
-    vector<ll> primes={2,3,5,7};
-    ll mx = 0;
-    for(int i= 2; i <= 7; i++){
-        for(auto it: a) {
-            if (count(all(primes), i) > 0) {
-                freq[(it % i)]++;
-            }
-        }
-        for(auto it: freq){
-            mx = max(mx, it.second);
-        }
-        freq.clear();
+    ll t ; cin >> t;
+    while(t--){
+        ll n, m; cin >> n >> m;
+        
     }
 
-    cout << mx << "\n";
     return 0;
 }

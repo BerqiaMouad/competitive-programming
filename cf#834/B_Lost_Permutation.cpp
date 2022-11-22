@@ -1,6 +1,3 @@
-//
-// Created by mouad on 19/11/22.
-//
 #include <bits/stdc++.h>
 using namespace std;
 #pragma GCC optimize("O2")
@@ -37,7 +34,7 @@ template <typename A, typename B>
 ostream &operator<<(ostream &out, vector<pair<A, B>> &v)
 {
     for (auto it : v)
-        out << it.first << ' ' << it.second << "\n";
+        out << it.first << ' ' << it.second;
     return out;
 }
 
@@ -46,24 +43,43 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    ll n; cin >> n;
-    vector<ll> a(n);
-    cin >> a;
-    map<ll, ll> freq;
-    vector<ll> primes={2,3,5,7};
-    ll mx = 0;
-    for(int i= 2; i <= 7; i++){
-        for(auto it: a) {
-            if (count(all(primes), i) > 0) {
-                freq[(it % i)]++;
+    ll t ; cin >> t;
+    while(t--){
+        int m, s; cin >> m >> s;
+        vector<int> b(m);
+        cin >> b;
+        sort(all(b));
+        vector<int> cnt(b[m - 1]+1, 0);
+        for(int i = 0; i< m; i++){
+            cnt[b[i]]++;
+        }
+        int ss = 0;
+        int x = 1;
+        int mx = b[m - 1];
+        while(ss < s) {
+            while(x <= mx && cnt[x] == 1){
+                x++;
+            }
+            if(x > mx){
+                mx = x;
+                while(sz(cnt) <= mx)
+                    cnt.push_back(0);
+            }
+            ss += x;
+            cnt[x]++;
+        }
+        bool ok = true;
+        for(int i = 1; i <= mx; i++){
+            if(cnt[i] != 1){
+                ok = false;
+                break;
             }
         }
-        for(auto it: freq){
-            mx = max(mx, it.second);
+        if(ss == s && ok){
+            YES;
         }
-        freq.clear();
+        else NO;
     }
 
-    cout << mx << "\n";
     return 0;
 }
