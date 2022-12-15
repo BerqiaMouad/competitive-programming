@@ -80,20 +80,19 @@ int main(){
 		vector<ll> a(n);
 		for(auto& it: a)
 			cin >> it;
-		vector<pair<ll, int>> b(n);
-		for(int i = 0; i< n; i++)
-			b[i] = {a[i], i};
 		
-		sort(all(b));
 		vector<pair<ll, ll>> p;
 
-		ll g = b[n - 1].first;
-
-		for(ll i = n - 2; i >= 0; i--){
-			if(g % b[i].first)
-				continue;
-			
+		for(ll i = 0; i < n; i++){
+			ll temp = 1;
+			while(temp < a[i]){
+				temp *= 2;
+			}
+			p.push_back({i+1, temp - a[i]});
 		}
+		cout << p.size() << "\n";
+		for(auto it: p)
+			cout << it.first << ' ' << it.second << "\n";
 	}
 
 	return 0;
