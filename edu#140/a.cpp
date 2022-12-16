@@ -70,6 +70,7 @@ int main(){
 	#ifndef ONLINE_JUDGE
 
 	freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
 
 	#endif
 
@@ -86,7 +87,7 @@ int main(){
 			cout << "YES\n";
 		}
 		else if(v[0].second != v[1].second && v[1].second != v[2].second && v[2].second != v[0].second)
-			cout << "YES\n";
+			cout << "NO\n";
 		else 
 			cout << "NO\n";
 	}

@@ -70,7 +70,7 @@ int main(){
 	#ifndef ONLINE_JUDGE
 
 	freopen("in.txt", "r", stdin);
-
+	freopen("out.txt", "w", stdout);
 	#endif
 
 	int n; cin >> n;
@@ -93,7 +93,6 @@ int main(){
 	}
 	for(ll i = mn; i<= mx; i++)
 		cout << i <<  ' ';
-	cout << "\n";
 
 	return 0;
 }
