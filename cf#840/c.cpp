@@ -57,6 +57,7 @@
 
 
 #include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 
 typedef long long ll;
@@ -77,56 +78,31 @@ int main(){
 	ll t; cin >> t;
 	while(t--){
 		ll n; cin >> n;
-		vector<pair<ll, ll>>a(n);
-		vector<ll> pref(n);
-		for(ll i = 0; i< n; i++){
-			cin >> a[i].first;
-			a[i].second = i;
-			if(i == 0)
-				pref[i] = a[i].first;
-			else 
-				pref[i] = pref[i - 1] + a[i].first;
+		vector<ll> a(n);
+		ll mx = 0;
+		ll s = 0;
+		for(int i =0; i< n; i++){
+			cin >> a[i];
+			mx = max(mx, a[i]);
+			s += a[i];
 		}
-
-		sort(all(a));
-
-		vector<bool> vis(n, false);
 		
-		ll res = 0;
-		ll i = 0, j = n - 1;
-		while(i < j){
-			if(vis[a[i].second]){
-				i++;
-				continue;
-			}
-			if(vis[a[j].second]){
-				j--;
-				continue;
-			}
-
-			ll mx = max(a[i].second, a[j].second);
-			ll mn = min(a[i].second, a[j].second);
-				
-			if((a[j].first - a[i].first) * (max(a[i].second, a[j].second) - min(a[i].second, a[j].second) + 1) < 
-				pref[mx] - pref[mn] + (a[i].second == mn ? a[i].first: a[j].first)){
-				
-				i++, j--;
-				continue;
-			}
-
-			for(int k = min(a[i].second, a[j].second); k <= max(a[i].second, a[j].second); k++){
-				vis[k] = true;
-			}
-
-
-			res += max((a[j].first - a[i].first) * (max(a[i].second, a[j].second) - min(a[i].second, a[j].second) + 1), 
-				pref[mx] - pref[mn] + (a[i].second == mn ? a[i].first: a[j].first));
+		if(n >= 4){
+			cout << mx * n << "\n";
 		}
-		for(auto it: a){
-			if(!vis[it.second])
-				res += it.first;
+		else {
+			if(n == 2){
+				cout << max(s, abs(a[0] - a[1]) * 2ll) << "\n";
+			}
+			else {
+				s = max(s, 3 * a[0]);
+				s = max(s, 3 * a[2]);
+				s = max(s, 3 * abs(a[0] - a[2]));
+				s = max(s, 3 * abs(a[0] - a[1]));
+				s = max(s, 3 * abs(a[1] - a[2]));
+				cout << s << "\n";
+			}
 		}
-		cout << max(res, pref[n - 1]) << "\n";
 	}
 
 	return 0;
