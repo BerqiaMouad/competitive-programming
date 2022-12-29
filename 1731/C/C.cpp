@@ -74,9 +74,23 @@ int main(){
 		for(auto &it: a)
 			cin >> it;
 
-		
+		ll cnt = 0;
 
+		vector<ll> vis(2 * n, 0);
+		ll x = 0;
+		vis[x]++;
+		for(int i = 0; i < n; i++){
+			x ^= a[i];
+
+			for(ll j = 0; j * j < 2 * n; j++){
+				if((x ^ (j * j)) < 2 * n)
+					cnt += vis[x ^ (j * j)];
+			}
+			vis[x]++;
+		}
+
+		cout << (n * (n+1LL) / 2) - cnt << "\n";
 	}
-
+	
 	return 0;
 }
