@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <set>
 
 using namespace std;
 
@@ -31,52 +32,41 @@ int main(){
 		ll n, m; cin >> n >> m;
 		vector<ll> a(n);
 		vector<ll> b(m);
-		vector<pair<ll, ll>> v(n+1);
-		ll id = 0;
-		for(auto &it: v){
-			it.first = 0;
-			it.second = id;
-			id++;
-		}
+		set<ll> s;
 		for(ll i = 0; i < n; i++){
 			cin >> a[i];
-			v[a[i]].first++;
+			s.insert(a[i]);
 		}
 		for(ll i = 0; i < m; i++){
 			cin >> b[i];
 		}
-		sort(all(v));
-		ll res = 0;
-		sort(all(b));
-		ll ind = v.size()-1;
-		ll it = b.size() - 1;
-		ll stop;
-		for(int i = ind; i >= 0 ; i--){
-			if(v[i].first == 0){
-				stop = i;
-				break;
-			}
+		vector<ll> v;
+		for(auto it: s){
+			v.push_back(count(all(a), it));
 		}
-		while(ind > stop && it >= 0){
-			if(ind > stop + 1 && v[ind].first >= v[ind-1].first){
-				res += min(b[it], v[ind].first);
-				v[ind].first -= min(b[it], v[ind].first);
-				it--;
+		sort(all(v));
+		sort(all(b));
+
+		ll ind = v.size() - 1;
+		ll indd = m - 1;
+		ll res = 0;
+		while(ind >= 0 && indd >= 0){
+			if(ind > 0 && v[ind] >= v[ind - 1]){
+				res += min(b[indd], v[ind]);
+				v[ind] -= min(b[indd], v[ind]);
+				indd--;
 			}
-			else if(ind > stop +1 && v[ind].first < v[ind-1].first){
-				res += min(b[it], v[ind-1].first);
-				v[ind-1].first -= min(b[it], v[ind-1].first);
+			else if(ind > 0 && v[ind] < v[ind - 1]){
 				ind--;
-				it--;
 			}
 			else {
-				res += min(b[it], v[ind].first);
-				v[ind].first -= min(b[it], v[ind].first);
-				it--;
-				ind--;
+				res += min(b[indd], v[ind]);
+				v[ind] -= min(b[indd], v[ind]);
+				indd--;
 			}
 		}
 		cout << res << "\n";
+		
 
 	}
 
