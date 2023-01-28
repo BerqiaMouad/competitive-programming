@@ -34,8 +34,12 @@ int main(){
 			cout << "-1\n";
 		}
 		else {
-			// I have no idea how to solve this problem 
-			// that's a shame ! :'(
+			ll a = x / 2;
+			ll b = a ^ x;
+			if((a + b) / 2 == x){
+				cout << a << " " << b << "\n";
+			}
+			else cout << "-1\n";
 		}
 	}
 }
