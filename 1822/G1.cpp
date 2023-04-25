@@ -25,31 +25,35 @@ typedef long long ll;
 
 using namespace std;
 
-vector<ll> divisors[1'000'001];
 
-
-void pre(){
-	for(ll i = 1; i <= 1'000'000; i++){
-		for(ll j = i; j <= 1'000'000; j += i){
-			divisors[j].push_back(i);
-		}
-	}
-}
-
+vector<ll> mp(1e6 + 1, 0);
 
 int main(){
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	pre();
 
 	ll t; cin >> t;
 
 	while(t--){
 		ll n; cin >> n;
 		vector<ll> a(n);
-		for(ll i = 0; i < n; i++) cin >> a[i];
+		ll mx = 0;
+		for(ll i = 0; i < n; i++) cin >> a[i], mp[a[i]]++, mx = max(mx, a[i]);
 
+		ll ans = 0;
+		
+		for(int i = 0; i < n; i++){
+			ans += (mp[a[i]] - 1) * (mp[a[i]] - 2);
+			for(ll b = 2; a[i] * b * b <= 1e6; b++){
+				ans += mp[a[i] * b] * mp[a[i] * b * b];
+			}
+		}
+
+		for(int i = 0; i<  n; i++){
+			mp[a[i]] = 0;
+		}
+		cout << ans << "\n";
 	}
 
 	return 0;
