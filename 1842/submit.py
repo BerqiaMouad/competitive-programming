@@ -29,8 +29,8 @@ if __name__ == '__main__':
     loginForm = browser.get_form(id='enterForm')
 
     # fill the login form
-    loginForm['handleOrEmail'].value = 'tutomouad@gmail.com'
-    loginForm['password'].value = 'azerty@gamerdaba2002'
+    loginForm['handleOrEmail'].value = 'nop'
+    loginForm['password'].value = 'nop'
 
     # submit the login form
     browser.submit_form(loginForm)
